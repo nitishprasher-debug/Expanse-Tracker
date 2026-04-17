@@ -1,0 +1,93 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.tracker.model.Expense" %>
+<%@ page import="com.tracker.model.Category" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Expense Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <% 
+        if (session.getAttribute("userId") == null) {
+            response.sendRedirect("login");
+        }
+    %>
+    
+    <div class="navbar">
+        <div class="navbar-brand">Expense Tracker</div>
+        <div class="navbar-menu">
+            <a href="dashboard" class="nav-link active">Dashboard</a>
+            <a href="expense?action=view" class="nav-link">Expenses</a>
+            <a href="expense?action=add" class="nav-link">Add Expense</a>
+            <a href="logout" class="nav-link">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="dashboard">
+            <h1>Dashboard</h1>
+            <p>Welcome, <strong><%= session.getAttribute("username") %></strong></p>
+            
+            <div class="summary-section">
+                <div class="summary-card">
+                    <h3>Total Expenses</h3>
+                    <p class="amount">$<%= String.format("%.2f", request.getAttribute("totalExpenses")) %></p>
+                </div>
+                <div class="summary-card">
+                    <h3>Number of Expenses</h3>
+                    <p class="count"><%= request.getAttribute("expenseCount") %></p>
+                </div>
+            </div>
+            
+            <div class="recent-expenses">
+                <h2>Recent Expenses</h2>
+                <%
+                    List<Expense> expenses = (List<Expense>) request.getAttribute("expenses");
+                    if (expenses != null && !expenses.isEmpty()) {
+                        int count = Math.min(5, expenses.size());
+                %>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                for (int i = 0; i < count; i++) {
+                                    Expense expense = expenses.get(i);
+                            %>
+                                <tr>
+                                    <td><%= expense.getExpenseDate() %></td>
+                                    <td><%= expense.getCategoryName() %></td>
+                                    <td><%= expense.getDescription() %></td>
+                                    <td>$<%= String.format("%.2f", expense.getAmount()) %></td>
+                                    <td>
+                                        <a href="expense?action=edit&expenseId=<%= expense.getExpenseId() %>" class="btn-small">Edit</a>
+                                        <a href="expense?action=delete&expenseId=<%= expense.getExpenseId() %>" class="btn-small" onclick="return confirm('Are you sure?');">Delete</a>
+                                    </td>
+                                </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                <%
+                    } else {
+                %>
+                    <p>No expenses yet. <a href="expense?action=add">Add your first expense</a></p>
+                <%
+                    }
+                %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

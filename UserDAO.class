@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker - Welcome</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to Expense Tracker</h1>
+            <p>Manage your expenses efficiently and keep track of your spending</p>
+            
+            <div class="button-group">
+                <a href="login" class="btn btn-primary">Login</a>
+                <a href="register" class="btn btn-secondary">Register</a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>Features:</h2>
+            <ul>
+                <li>Track your daily expenses</li>
+                <li>Organize expenses by category</li>
+                <li>View expense history</li>
+                <li>Monitor your spending patterns</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
